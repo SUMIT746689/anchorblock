@@ -1,7 +1,28 @@
 import React from "react";
 import { CompanyLogo } from "../../components/Logo/Logo";
+import { useLoginApiMutation } from "../../redux/services/login";
+
 
 const SignIn = () => {
+
+    const [login] = useLoginApiMutation();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log({ e: e.target.email.value })
+        console.log({ e: e.target.password.value })
+        const data = { email: e.target.email.value, password: e.target.email.value }
+        login(data)
+            .unwrap()
+            .then((res) => {
+                console.log({ res })
+                alert("successfull")
+            })
+            .catch(() =>
+                alert("there was an error"),
+            );
+    }
+
     return (
         <div className=" h-[100vh] w-full flex justify-center items-center">
             <div className=" grow max-w-[444px] max-h-[576px] shadow-lg shadow-gray-200 rounded-2xl" >
@@ -17,31 +38,33 @@ const SignIn = () => {
                         </div>
                     </section>
 
-                    <section className=" flex flex-col align-top gap-[6px]">
-                        <div className=" text-sm font-medium text-[#344054]">Email</div>
-                        <div >
-                            <input className=" px-[14px] py-[10px] border border-[#FDA29B] rounded-lg shadow w-full " placeholder="Enter Email" />
-                        </div>
-                        <div className=" text-[#F04438] text-sm"> This field is required</div>
-                    </section>
-                    <section className=" flex flex-col align-top gap-[6px]">
-                        <div className=" text-sm font-medium text-[#344054]">Password</div>
-                        <div >
-                            <input className=" px-[14px] py-[10px] border border-[#D6BBFB] rounded-lg shadow w-full " placeholder="Enter Password" type="password" />
-                        </div>
-                        <div className=" text-[#F04438] text-sm"> This field is required</div>
-                    </section>
+                    <form onSubmit={handleSubmit}>
+                        <section className=" flex flex-col align-top gap-[6px]">
+                            <div className=" text-sm font-medium text-[#344054]">Email</div>
+                            <div >
+                                <input name="email" className=" px-[14px] py-[10px] border border-[#FDA29B] rounded-lg shadow w-full outline-none ring-4 ring-[#FDA29B] ring-opacity-30 " placeholder="Enter Email" />
+                            </div>
+                            <div className=" text-[#F04438] text-sm"> This field is required</div>
+                        </section>
+                        <section className=" flex flex-col align-top gap-[6px]">
+                            <div className=" text-sm font-medium text-[#344054]">Password</div>
+                            <div >
+                                <input name="password" className=" px-[14px] py-[10px] border border-[#D6BBFB] rounded-lg shadow w-full outline-none ring-4 ring-[#D6BBFB] ring-opacity-30 " placeholder="Enter Password" type="password" />
+                            </div>
+                            <div className=" text-[#F04438] text-sm"> This field is required</div>
+                        </section>
 
-                    <section className="grid grid-cols-6 gap-2 py-5">
-                        <div className=" border rounded-sm h-1 bg-[#F04438]"></div>
-                        <div className=" border rounded-sm h-1 bg-[#F04438]"></div>
-                        <div className=" border rounded-sm h-1 bg-[#F04438]"></div>
-                        <div className=" border rounded-sm h-1 bg-[#F04438]"></div>
-                        <div className=" border rounded-sm h-1 bg-[#F04438]"></div>
-                        <div className=" border rounded-sm h-1 bg-[#F04438]"></div>
-                    </section>
+                        <section className="grid grid-cols-6 gap-2 py-5">
+                            <div className=" border rounded-sm h-1 bg-[#F04438]"></div>
+                            <div className=" border rounded-sm h-1 bg-[#F04438]"></div>
+                            <div className=" border rounded-sm h-1 bg-[#F04438]"></div>
+                            <div className=" border rounded-sm h-1 bg-[#F04438]"></div>
+                            <div className=" border rounded-sm h-1 bg-[#F04438]"></div>
+                            <div className=" border rounded-sm h-1 bg-[#F04438]"></div>
+                        </section>
 
-                    <button className=" bg-[#6941C6] text-white w-full px-[18px] py-[10px] rounded-lg">Sign In</button>
+                        <button type="submit" className=" bg-[#6941C6] text-white w-full px-[18px] py-[10px] rounded-lg">Sign In</button>
+                    </form>
 
                     <section className=" font-medium pt-2">
                         <span className=" text-[#B0B7C3]">Already have an account?</span>
