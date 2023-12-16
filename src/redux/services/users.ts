@@ -1,20 +1,16 @@
-// Need to use the React-specific entry point to import createApi
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { GetUsersType } from '../../types/userTypes'
-// import type { Pokemon } from './types'
+import { API_KEY } from '../../secret'
 
 
-// Define a service using a base URL and expected endpoints
 export const usersApi = createApi({
     reducerPath: 'usersApi',
-    baseQuery: fetchBaseQuery({ baseUrl: 'https://reqres.in/api/users' }),
+    baseQuery: fetchBaseQuery({ baseUrl: API_KEY }),
     endpoints: (builder) => ({
         getUsers: builder.query<GetUsersType, number>({
-            query: (pageNumber) => `?page=${pageNumber}`,
+            query: (pageNumber) => `users?page=${pageNumber}`,
         }),
     }),
 })
 
-// Export hooks for usage in functional components, which are
-// auto-generated based on the defined endpoints
 export const { useGetUsersQuery } = usersApi

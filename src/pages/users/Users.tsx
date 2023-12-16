@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Layout from "../../components/Layout/Layout";
 import { ButtonWrapper } from "../../components/Button/Button";
 import { DeleteLogo, EditLogo, FileUploadLogo } from "../../components/Logo/Logo";
 import { Container } from "../../components/Container/Container";
@@ -19,32 +18,32 @@ const dummyAbout = [
     { title: "Android Developer", about: "React native build cross platform apps" },
     { title: "Backend Davalper", about: "Super lightweight design app" },
     { title: "UI/UX  developer", about: "Super lightweight design app" },
+    { title: "Backend Davalper", about: "Super lightweight design app" },
+    { title: "UI/UX  developer", about: "Super lightweight design app" },
+    { title: "DevOps engineer", about: "Using git, jenkins, ansible, docker, kubernetes" },
+    { title: "Design software", about: "Super lightweight design app" },
+    { title: "Data prediction", about: "AI and machine learning data" },
 
 ]
 
 const Users = () => {
     const [page, setPage] = useState(1)
     const { data, error, isLoading } = useGetUsersQuery(page);
-    console.log({ data })
 
     const handlePreviousPage = () => {
         setPage((page) => {
             if (page === 1) return Number(data?.total_pages);
-            console.log("ffffff", page - 1)
             return page - 1
         })
     }
     const handleNextPage = () => {
         setPage(page => {
             if (page === data?.total_pages) return 1;
-            console.log("sssss", page + 1)
             return page + 1
         })
     }
     return (
         <>
-            <Layout />
-
             <Container>
                 <section className=" py-8 flex justify-between">
                     <div className=" text-2xl font-medium text-gray-900">Users</div>
@@ -59,7 +58,7 @@ const Users = () => {
                     </div>
                 </section>
 
-                <section className="border drop-shadow-lg rounded-lg overflow-hidden ">
+                <section className="border shadow-lg rounded-lg overflow-hidden ">
                     <table className=" w-full">
                         <thead>
                             <TableHead datas={[<input type="checkbox" />, "User Info", "About", "Status", ""]} />
@@ -80,7 +79,21 @@ const Users = () => {
                                             <div className=" text-black">{dummyAbout[user.id].title}</div>
                                             <div>{dummyAbout[user.id].about}</div>
                                         </div>,
-                                        <div></div>
+                                        <div className=" text-xs font-medium">
+                                            {['Customer', 'Churned'][Math.floor(Math.random() * 2)] === 'Customer' ?
+                                                <div className=" text-green-700 rounded-xl bg-green-100 py-[2px] px-2 w-fit">Customer</div>
+                                                :
+                                                <div className=" text-gray-700 rounded-xl bg-gray-100 py-[2px] px-2 w-fit">Churned</div>
+                                            }
+                                        </div>,
+                                        <div className=" flex">
+                                            <div className=" p-2 cursor-pointer hover:bg-slate-100">
+                                                <DeleteLogo />
+                                            </div>
+                                            <div className=" p-2 cursor-pointer hover:bg-slate-100">
+                                                <EditLogo />
+                                            </div>
+                                        </div>
 
                                     ]} />
                                 ))

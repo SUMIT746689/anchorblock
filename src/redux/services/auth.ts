@@ -1,13 +1,93 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { AuthLogIn, AuthUser } from '../../types/authTypes'
+import { API_KEY } from '../../secret'
+import { getCookie } from '../../utils/getCookie'
+
 
 export const authApi = createApi({
   reducerPath: 'authApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://reqres.in/api/users' }),
+  tagTypes: ['Auth',],
+  baseQuery: fetchBaseQuery({ baseUrl: API_KEY }),
   endpoints: (builder) => ({
-    getPokemonByName: builder.query<Pokemon, string>({
-      query: (name) => `pokemon/${name}`,
+    registerUser: builder.mutation<AuthLogIn, { email: string, password: string }>({
+      query: (body) => ({
+        url: 'register',
+        method: 'POST',
+        body,
+        credentials: "omit",
+      }),
+      transformResponse: (fetchBaseQuery: { token: string }) => {
+        console.log({ fetchBaseQuery })
+        document.cookie = "auth=" + fetchBaseQuery.token
+        return fetchBaseQuery
+      },
+      // transformErrorResponse: (baseQueryReturnValue) => baseQueryReturnValue.data || 'Failed to Login',
+      transformErrorResponse: (baseQueryReturnValue: { status: number, data: { error: string } }): string => baseQueryReturnValue.data?.error || 'Failed to Login',
+      invalidatesTags: ["Auth"]
+    }),
+    loginUser: builder.mutation<AuthLogIn, { email: string, password: string }>({
+      query: (body) => ({
+        url: 'login',
+        method: 'POST',
+        body,
+        credentials: "omit",
+      }),
+      transformResponse: (fetchBaseQuery: { token: string }) => {
+        console.log({ fetchBaseQuery })
+        document.cookie = "auth=" + fetchBaseQuery.token
+        return fetchBaseQuery
+      },
+      // transformErrorResponse: (baseQueryReturnValue) => baseQueryReturnValue.data || 'Failed to Login',
+      transformErrorResponse: (baseQueryReturnValue: { status: number, data: { error: string } }): string => baseQueryReturnValue.data?.error || 'Failed to Login',
+      invalidatesTags: ["Auth"]
+    }),
+    logoutUser: builder.mutation<string, void>({
+      query: (body) => ({
+        url: 'logout',
+        method: 'POST',
+        body,
+      }),
+      onQueryStarted() {
+        document.cookie = `Authorization=`
+      },
+      transformErrorResponse: (baseQueryReturnValue) => baseQueryReturnValue.data || 'Failed to Logout',
+      invalidatesTags: ["Auth"]
+    }),
+    authUser: builder.query<any, void>({
+      query: () => ({
+        url: 'me',
+        // credentials: 'include',
+      }),
+      // onQueryStarted: async (args, { dispatch, queryFulfilled, getState }) => {
+      //   // try {
+      //   console.log({ gets: getState() })
+      //   // throw new Error("Sdasdfs")
+      //   const { data: qdatas } = await queryFulfilled;
+      //   console.log({ qdatas })
+      //   const cookie = getCookie("auth");
+      //   console.log({ cookie })
+      //   if (cookie) {
+      //     dispatch(
+      //       authApi.endpoints.authUser.initiate({
+      //         isAuth: true
+      //       })
+      //     )
+      //   }
+      //   // console.log({ args, queryFulfilled })
+      //   // } 
+      //   // catch (error) {
+      //   // handle error here, dispatch toast message
+      //   // }
+      // },
+      transformResponse: (response): { isAuth: boolean } => {
+        const cookie = getCookie("auth");
+        if (cookie) return { isAuth: true }
+        return { isAuth: false }
+      },
+      providesTags: ['Auth']
     }),
   }),
+
 })
 
-export const { useGetPokemonByNameQuery } = pokemonApi
+export const { useRegisterUserMutation, useLoginUserMutation, useLogoutUserMutation, useAuthUserQuery } = authApi
