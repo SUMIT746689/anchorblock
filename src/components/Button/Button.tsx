@@ -24,9 +24,9 @@ export const ButtonWrapper: FC<ButtonWrapperType> = (props) => {
 }
 
 export const NavButtonWrapper = (props) => {
-    const { children } = props
+    const { children, isActive } = props
     return (
-        <button className=" text-base font-medium rounded-md px-3 py-2 hover:bg-[#7F56D9]">
+        <button className={` ${isActive ? 'bg-[#7F56D9]' : ''  } text-base font-medium rounded-md px-3 py-2 hover:bg-[#7F56D9] `}>
             {children}
         </button>
     )

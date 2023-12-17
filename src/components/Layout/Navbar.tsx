@@ -16,12 +16,32 @@ const Navbar = () => {
                                 <div className=" text-xl font-bold text-white my-auto"> Stack</div>
                             </section>
 
-                            <section className=" text-base text-white my-auto">
-                                <NavLink to="/"><NavButtonWrapper>Home</NavButtonWrapper></NavLink>
-                                <NavLink to="/users"><NavButtonWrapper>Users</NavButtonWrapper></NavLink>
-                                <NavLink to="/projects"><NavButtonWrapper>Projects</NavButtonWrapper></NavLink>
-                                <NavLink to="/tasks"><NavButtonWrapper>Tasks</NavButtonWrapper></NavLink>
-                                <NavLink to="/reporting"><NavButtonWrapper>Reporting</NavButtonWrapper></NavLink>
+                            <section className=" text-base text-white my-auto flex gap-1">
+                                <NavLink to="/">
+                                    {({ isActive }) => (
+                                        <NavButtonWrapper isActive={isActive}>Home</NavButtonWrapper>
+                                    )}
+                                </NavLink>
+                                <NavLink to="/users">
+                                    {({ isActive }) => (
+                                        <NavButtonWrapper isActive={isActive}>Users</NavButtonWrapper>
+                                    )}
+                                </NavLink>
+                                <NavLink to="/projects">
+                                    {({ isActive }) => (
+                                        <NavButtonWrapper isActive={isActive}>Projects</NavButtonWrapper>
+                                    )}
+                                </NavLink>
+                                <NavLink to="/tasks">
+                                    {({ isActive }) => (
+                                        <NavButtonWrapper isActive={isActive}>Tasks</NavButtonWrapper>
+                                    )}
+                                </NavLink>
+                                <NavLink to="/reporting">
+                                    {({ isActive }) => (
+                                        <NavButtonWrapper isActive={isActive}>Reporting</NavButtonWrapper>
+                                    )}
+                                </NavLink>
                             </section>
                         </section>
 

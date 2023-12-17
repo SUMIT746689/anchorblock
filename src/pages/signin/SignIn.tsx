@@ -10,7 +10,6 @@ import * as Yup from 'yup';
 
 const SignIn = () => {
     const auth = useSelector((state: { authUser: { isAuth: boolean } }) => state.authUser);
-    console.log({ auth })
     const [login, { isLoading, error, isSuccess }] = useLoginUserMutation();
     const navigate = useNavigate()
     useEffect(() => {

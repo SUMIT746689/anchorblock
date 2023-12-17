@@ -58,27 +58,6 @@ export const authApi = createApi({
         url: 'me',
         // credentials: 'include',
       }),
-      // onQueryStarted: async (args, { dispatch, queryFulfilled, getState }) => {
-      //   // try {
-      //   console.log({ gets: getState() })
-      //   // throw new Error("Sdasdfs")
-      //   const { data: qdatas } = await queryFulfilled;
-      //   console.log({ qdatas })
-      //   const cookie = getCookie("auth");
-      //   console.log({ cookie })
-      //   if (cookie) {
-      //     dispatch(
-      //       authApi.endpoints.authUser.initiate({
-      //         isAuth: true
-      //       })
-      //     )
-      //   }
-      //   // console.log({ args, queryFulfilled })
-      //   // } 
-      //   // catch (error) {
-      //   // handle error here, dispatch toast message
-      //   // }
-      // },
       transformResponse: (response): { isAuth: boolean } => {
         const cookie = getCookie("auth");
         if (cookie) return { isAuth: true }

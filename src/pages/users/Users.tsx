@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ButtonWrapper } from "../../components/Button/Button";
-import { DeleteLogo, EditLogo, FileUploadLogo } from "../../components/Logo/Logo";
+import { ArrowLogo, DeleteLogo, EditLogo, FileUploadLogo, MinusLogo, SignLogo } from "../../components/Logo/Logo";
 import { Container } from "../../components/Container/Container";
 import { TableBody, TableHead } from "../../components/Table/Table";
 import { useGetUsersQuery } from "../../redux/services/users";
@@ -29,6 +29,7 @@ const dummyAbout = [
 const Users = () => {
     const [page, setPage] = useState(1)
     const { data, error, isLoading } = useGetUsersQuery(page);
+    const [isActive, setIsActive] = useState({ 3: true })
 
     const handlePreviousPage = () => {
         setPage((page) => {
@@ -42,6 +43,14 @@ const Users = () => {
             return page + 1
         })
     }
+    const handleAddUser = (user_id: number) => {
+        setIsActive((value) => {
+            const value_ = { ...value };
+            value_[user_id] = !value_[user_id];
+            return value_;
+        })
+    }
+
     return (
         <>
             <Container>
@@ -61,16 +70,24 @@ const Users = () => {
                 <section className="border shadow-lg rounded-lg overflow-hidden ">
                     <table className=" w-full">
                         <thead>
-                            <TableHead datas={[<input type="checkbox" />, "User Info", "About", "Status", ""]} />
+                            <TableHead datas={[
+                                <div className=" flex gap-4 my-auto">
+                                    <div className={` border w-5 h-5 text-center border-[#7F56D9] rounded-md flex justify-center items-center cursor-pointer `}>{Object.keys(isActive).length > 0 && <MinusLogo />}</div>
+                                    <span>User Info</span>
+                                    <span className=" cursor-pointer hover:scale-125"><ArrowLogo /></span>
+                                </div>,
+                                "About",
+                                "Status",
+                                ""]} />
                         </thead>
                         <tbody>
                             {
                                 data?.data?.map((user) => (
                                     <TableBody key={user?.id} datas={[
-                                        <input type="checkbox" />,
-                                        <div className=" flex">
+                                        <div className="flex gap-3">
+                                            <button onClick={() => handleAddUser(user?.id)} className={(isActive[user?.id] ? 'border-[#7F56D9] ' : ' border-gray-300 ') + `border w-5 h-5 text-center rounded-md flex justify-center items-center cursor-pointer my-auto`}> {isActive[user.id] && <SignLogo />}</button>
                                             <img src={user.avatar} className=" w-10 h-10 rounded-full object-contain" />
-                                            <div className=" pl-3">
+                                            <div>
                                                 <div className=" text-sm font-medium text-black">{user.first_name} {user.last_name}</div>
                                                 <div className=" text-gray-500 font-normal">{user?.email}</div>
                                             </div>
@@ -101,7 +118,7 @@ const Users = () => {
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colSpan={5}>
+                                <td colSpan={4}>
                                     <div className="flex justify-between px-6 py-3">
                                         <ButtonWrapper handleClick={handlePreviousPage}>Previous</ButtonWrapper>
                                         <div className="my-auto">Page {data?.page} of {data?.total_pages}</div>

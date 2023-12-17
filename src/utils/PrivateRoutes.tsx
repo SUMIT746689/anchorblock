@@ -5,7 +5,6 @@ import Layout from '../components/Layout/Layout';
 
 const PrivateRoutes = () => {
     const { data, isLoading, error } = useAuthUserQuery();
-    console.log({ data, error });
     const { isAuth } = data || {};
     return (
         !isLoading && (isAuth ? <Layout><Outlet /></Layout> : < Navigate to="/login" />)

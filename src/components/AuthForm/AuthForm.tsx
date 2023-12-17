@@ -9,7 +9,7 @@ type AuthCardWrapperType = {
 export const AuthCardWrapper: FC<AuthCardWrapperType> = ({ children }) => {
     return (
         <div className=" h-[100vh] w-full flex justify-center items-center">
-            <div className=" grow max-w-[444px] max-h-[576px] shadow-lg shadow-gray-200 rounded-2xl" >
+            <div className=" grow max-w-[444px] max-h-[576px] border shadow-lg shadow-gray-200 rounded-2xl" >
                 <div className=" w-full px-[62px] py-[54px] ">
                     {children}
                 </div>

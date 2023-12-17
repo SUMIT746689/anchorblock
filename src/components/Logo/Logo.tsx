@@ -121,3 +121,27 @@ export const EditLogo = () => {
         </svg>
     )
 }
+
+export const ArrowLogo = () => {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M8 3.33337V12.6667M8 12.6667L12.6667 8.00004M8 12.6667L3.33333 8.00004" stroke="#667085" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+    )
+}
+
+export const MinusLogo = () => {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M2.91667 7H11.0833" stroke="#7F56D9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+    )
+}
+
+export const SignLogo = () => {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none" >
+            <path d="M10 3L4.5 8.5L2 6" stroke="#7F56D9" strokeWidth="1.6666" strokeLinecap="round" strokeLinejoin="round" />
+        </svg >
+    )
+}
