@@ -1,13 +1,15 @@
 import React from 'react';
 import { Outlet, Navigate } from 'react-router-dom'
-import { useAuthUserQuery } from '../redux/services/auth'
 import Layout from '../components/Layout/Layout';
+import { useSelector } from 'react-redux';
 
 const PrivateRoutes = () => {
-    const { data, isLoading, error } = useAuthUserQuery();
-    const { isAuth } = data || {};
+    // const { data, isLoading, error } = useAuthUserQuery();
+    // @ts-ignore
+    const { loading, userInfo, error, success } = useSelector((state) => state.authUser)
+
     return (
-        !isLoading && (isAuth ? <Layout><Outlet /></Layout> : < Navigate to="/login" />)
+        !loading && (success ? <Layout><Outlet /></Layout> : < Navigate to="/login" />)
     )
 }
 

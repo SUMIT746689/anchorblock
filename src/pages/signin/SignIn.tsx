@@ -1,40 +1,35 @@
 import React, { useEffect } from "react";
-import { useLoginUserMutation } from "../../redux/services/auth";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AuthCardFooter, AuthCardHeader, AuthCardWrapper, AuthForm } from "../../components/AuthForm/AuthForm";
 import { Formik } from "formik";
 import * as Yup from 'yup';
+import { loginUser } from "../../redux/actions/authActions";
 
 
 const SignIn = () => {
-    const auth = useSelector((state: { authUser: { isAuth: boolean } }) => state.authUser);
-    const [login, { isLoading, error, isSuccess }] = useLoginUserMutation();
-    const navigate = useNavigate()
+    // @ts-ignore
+    const { loading, userInfo, error, success } = useSelector((state) => state.authUserLogin)
+    const dispatch = useDispatch()
+    const navigate = useNavigate();
+    console.log({error})
     useEffect(() => {
         // @ts-ignore
         if (error) toast.error(error);
-    }, [error])
-
-    useEffect(() => {
-        if (isSuccess) {
-            toast.success("Login successfull")
+        if (success) {
+            toast.success("Registration successfull")
             navigate("/users")
         }
-    }, [isSuccess])
+        return 
+    }, [error, success])
+
 
     const handleSubmit = async (_values: { email: string, password: string }) => {
-        login(_values)
-            .unwrap()
-        // .then((res) => {
-        //     console.log({ res })
-        //     alert("successfull")
-        // })
-        // .catch(() =>
-        //     alert("there was an error"),
-        // );
+        // @ts-ignore
+        dispatch(loginUser(_values))
     }
+
 
     return (
         <AuthCardWrapper>
@@ -57,7 +52,7 @@ const SignIn = () => {
                 onSubmit={handleSubmit}
             >
                 {(formikDatas) => (
-                    <AuthForm title="Sign In" isLoading={isLoading} isSuccess={isSuccess} formikDatas={formikDatas} />
+                    <AuthForm title="Sign In" isLoading={loading} isSuccess={success} formikDatas={formikDatas} />
                 )
                 }
             </Formik>

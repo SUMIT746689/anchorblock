@@ -1,39 +1,34 @@
 import React, { useEffect } from "react";
-import { CompanyLogo } from "../../components/Logo/Logo";
-import { authApi, useRegisterUserMutation } from "../../redux/services/auth";
 import { toast } from "react-toastify";
 import { AuthCardFooter, AuthCardHeader, AuthCardWrapper, AuthForm } from "../../components/AuthForm/AuthForm";
 import { Formik } from "formik";
 import * as Yup from 'yup';
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser } from "../../redux/actions/authActions";
 
 
 const SignUp = () => {
-
-    const [login, { isLoading, error, isSuccess }] = useRegisterUserMutation();
+    // @ts-ignore
+    const { loading, userInfo, error, success } = useSelector((state) => state.authUserRegister)
+    const dispatch = useDispatch()
+    // const [login, { isLoading, error, isSuccess }] = useRegisterUserMutation();
     const navigate = useNavigate();
     useEffect(() => {
         // @ts-ignore
         if (error) toast.error(error);
-    }, [error])
-
-    useEffect(() => {
-        if (isSuccess) {
+        if (success) {
             toast.success("Registration successfull")
             navigate("/users")
         }
-    }, [isSuccess])
+    }, [error, success])
+
 
     const handleSubmit = async (_values: { email: string, password: string }) => {
-        login(_values)
-            .unwrap()
-        // .then((res) => {
-        //     console.log({ res })
-        //     alert("successfull")
-        // })
-        // .catch(() =>
-        //     alert("there was an error"),
-        // );
+        // @ts-ignore
+        dispatch(registerUser(_values))
+        // login(_values)
+        //     .unwrap()
     }
 
     return (
@@ -58,7 +53,7 @@ const SignUp = () => {
                 onSubmit={handleSubmit}
             >
                 {(formikDatas) => (
-                    <AuthForm title="Sign Up" withProgressBar={true} isLoading={isLoading} isSuccess={isSuccess} formikDatas={formikDatas} />
+                    <AuthForm title="Sign Up" withProgressBar={true} isLoading={loading} isSuccess={success} formikDatas={formikDatas} />
                 )
                 }
             </Formik>
